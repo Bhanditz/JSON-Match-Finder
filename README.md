@@ -4,7 +4,7 @@ What is a generalized Python 3 application used to match listings against openin
 What as a package is made for Linux systems using systemd, but as a Python module it can be used in any system that has Python 3. It is possible without much difficulty to port the entire application with all of its functionality to any system, including Windows and OS X.
 
 ## Installation
-If you use Arch Linux, you should navigate to the main directory where you will find the PKGBUILD and src directory. Install like so:
+If you use Arch Linux, you should navigate to the main directory where you will find the PKGBUILD and src directory. I have structured the repository in this manner rather than placing it in the AUR because the application requires modification to be useful. Install like so:
 ```
 $ makepkg -si
 ```
