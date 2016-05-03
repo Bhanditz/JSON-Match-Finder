@@ -1,0 +1,10 @@
+[Unit]
+Description=what.service every 15 minutes
+
+[Timer]
+OnBootSec=100
+OnUnitActiveSec=15min
+Unit=what.service
+
+[Install]
+WantedBy=timers.target
