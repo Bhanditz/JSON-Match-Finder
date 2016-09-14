@@ -33,21 +33,24 @@ Each command is documented within the user interface, simply use the help comman
 ```
 ## File Outline
 #### Package Files
-```
-./PKGBUILD              Installs package in Arch Linux.
-./src/setup.py          Installs Python module.
-./src/what.py           Executable for interactive session.
-./src/what-service.py   Executable used by service.
-./src/what.timer        Systemd timer that runs service periodically.
-./src/what.service      Systemd service that runs what-service.py.
-./src/what/__init__.py  Python module information.
-./src/what/api.py       Accesses JSON API.
-./src/what/libwhat.py   Provides general functions used in What.
-./src/what/service.py   Operates continuous automated service.
-./src/what/ui.py        Fully interactive command-line shell.
-./src/what/config.py    Build time configuration.
-./src/what/session.py   Manages user session and match storage.
-```
+
+<big><pre>
+[PKGBUILD](PKGBUILD)              Installs package in Arch Linux.
+src/[setup.py](src/setup.py)          Installs Python module.
+src/[what.py](src/what.py)           Executable for interactive session.
+src/[what-service.py](src/what-service.py)   Executable used by service.
+src/[what.timer](src/what.timer)        Systemd timer that runs service periodically.
+src/[what.service](src/what.service)      Systemd service that runs what-service.py.
+src/what/[\__init__.py](src/what/__init__.py)  Python module information.
+src/what/[api.py](src/what/api.py)       Accesses JSON API.
+src/what/[libwhat.py](src/what/libwhat.py)   Provides general functions used in What.
+src/what/[service.py](src/what/service.py)   Operates continuous automated service.
+src/what/[ui.py](src/what/ui.py)        Fully interactive command-line shell.
+src/what/[config.py](src/what/config.py)    Build time configuration.
+src/what/[session.py](src/what/session.py)   Manages user session and match storage.
+</pre></big>
+
+
 #### Application Files
 ```
 ~/.config/what/last_change.pkl  Used to prevent erasing new matches.
