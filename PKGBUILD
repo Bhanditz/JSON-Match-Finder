@@ -1,5 +1,5 @@
 pkgname=what
-pkgver=0.1.0
+pkgver=0.1.1
 pkgrel=1
 pkgdesc="Match listings to unfilled openings."
 arch=('any')

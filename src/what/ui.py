@@ -207,11 +207,11 @@ class UI(cmd.Cmd, Help, Session, Args):
 		elif command == 'view':
 			self.view_matches(args)
 		elif command == 'update':
-			self.matches.fill_check()
+			self.matches.fill_check(self)
 			self.sure_save()
 
 	def find_matches(self, args):
-		print('Please be patient. Due to API opening rate limits, each full page takes seven minutes.')
+		print('Please be patient. Due to API rate limits, each full page takes seven minutes.')
 		if args.random:
 			self.matches.random_listings(args.pages)
 		else:
@@ -225,7 +225,7 @@ class UI(cmd.Cmd, Help, Session, Args):
 		elif args.review:
 			if not args.skip_check:
 				log_print('Removing filled openings . . .')
-				self.matches.fill_check()
+				self.matches.fill_check(self)
 			log_print('Initializing manual match review.', quiet=True)
 			print(self.matches.good_header)
 			self.review_matches()

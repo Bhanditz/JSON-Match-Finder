@@ -37,6 +37,12 @@ def repeat(function, times):
 	for i in range(times):
 		function()
 
+def legible(size):
+	for unit in ['B','KB','MB','GB','TB','PB']:
+		if abs(size) < 1000:
+			return str(size) + ' ' + unit
+		num /= 1000.0
+
 def yn(prompt, preferred='neither'):
 	force = preferred.lower() == 'y' or preferred.lower() == 'n'
 	if force:

@@ -58,16 +58,22 @@ class User():
 
 class Opening():
 	def __init__(self, json_data):
+		""" Openings are instantiated from opening search results, NOT from an
+		individual API reply for a specific opening.
+		"""
 		self.authors, self.media, self.encodings, self.formats = {}, {}, {}, {}
 		self.id = json_data['openingId']
 		self.url = 'https://website.com/openings.php?action=view&id=' + str(self.id)
 		self.api_url = 'https://website.com/api.php?action=opening&id=' + str(self.id)
 		self.title = h.unescape(json_data['title'])
 		self.filled = json_data['isFilled']
+		self.size = json_data['size']
 		self.description = unBB(h.unescape(json_data['description']))
 		self.year = json_data['year']
 		self.log, self.cert, self.log_score = self.log_cert(json_data['logCert'])
-		
+		self.bad = False
+		self.api_url = 'https://website.com/api.php?action=opening&id=' + str(self.id)
+		self.url = 'https://website.com/openings.php?action=view&id=' + str(self.id)
 		for author_group in json_data['authors']:
 			for author in author_group:
 				self.authors.setdefault(h.unescape(author['name']), 1)
@@ -88,39 +94,65 @@ class Opening():
 		return log, cert, log_score
 		
 	def __str__(self):
+		""" Brief overview listing string. """
 		return c.c + str(self.title) + c.end + ' - ' + self.url + '\n'
 
 	def verbose(self):
+		""" A more verbose alternative to __str__ for match review. """
 		log_cert = 'None'
-		t = c.c+c.bold+ 'Opening: ' + str(self.title) + '\n' + c.end
-		u = self.url + '\n'
-		a = c.bold+'Authors: '+c.end + ', '.join([item for item in self.authors]) + '\n'
-		f = c.bold+'Formats: '+c.end + ', '.join([item for item in self.formats]) + '\n'
-		b = c.bold+'Encodings: '+c.end + ', '.join([item for item in self.encodings]) + '\n'
-		m = c.bold+'Media: '+c.end + ', '.join([item for item in self.media]) + '\n'
-		d = c.bold+'Description: '+c.end + self.description + '\n'
+		t = c.c+c.bold+ 'Opening: ' + str(self.title) + c.end
+		u = self.url
+		v = c.bold+'Size: '+c.end + legible(self.size)
+		a = c.bold+'Authors: '+c.end + ', '.join([item for item in self.authors])
+		f = c.bold+'Formats: '+c.end + ', '.join([item for item in self.formats])
+		b = c.bold+'Encodings: '+c.end + ', '.join([item for item in self.encodings])
+		m = c.bold+'Media: '+c.end + ', '.join([item for item in self.media])
+		d = c.bold+'Description: '+c.end + self.description
 		if self.log == True:
 			log_cert = 'Log ' + str(self.log_score) + '%'
 		if self.cert == True:
 			log_cert += ' + Cert'
-		l = c.bold+'VM Requirements: '+c.end + log_cert + '\n'
-		return t + u + a + f + b + m + l + d
+		l = c.bold+'VM Requirements: '+c.end + log_cert
+		return '\n'.join([t, u, v, a, f, b, m, l, d])
 
 	def url_set(self):
+		""" Not sure why I ever had this outside of __init__. Keeping for now in
+		case I realize why I had it in the first place.
+		"""
 		self.api_url = 'https://website.com/api.php?action=opening&id=' + str(self.id)
 		self.url = 'https://website.com/openings.php?action=view&id=' + str(self.id)
 		return self.url
 
 	def is_filled(self, user):
-		self.url_set()
+		""" Check fill status of the opening. Account for possibly deleted
+		openings as well as possible errors in fetching the opening.
+		"""
+		#self.url_set()
 		opening_page = user.session.get(self.api_url).text
 		json_data = json.loads(opening_page)
 		try:
-			filled = json_data['response']['isFilled']
+			status = json_data['response']['isFilled']
+			self.bad = False
+			return status
 		except KeyError as e:
-			filled = False
 			log_print('KeyError: Failed to check fill status for opening #' + str(self.id) + ' because: ' + str(e))
-		return filled
+			return False
+		except TypeError as e:
+			if user.logged_in():
+				# Redo everything to make sure we didn't screw up.
+				opening_page = user.session.get(self.api_url).text
+				json_data = json.loads(opening_page)
+				dead = {'status': 'failure', 'response': []}
+				if json_data == dead and self.bad == True:
+					log_print('Opening #' + str(self.id) + ' no longer exists. Removing . . .')
+					return True
+				elif json_data == dead:
+					log_print('Opening #' + str(self.id) + ' may no longer exist. Keeping for now.')
+					self.bad = True
+					return False
+			log_print('TypeError: Failed to check fill status for opening #' + str(self.id) + ' because: ' + str(e))
+			print('Debugging info:\n' + json_data)
+			return False
 
 class Listing():
 	def __init__(self, json_data, group):
@@ -140,10 +172,9 @@ class Listing():
 		return self.medium +', '+ self.format +', '+ self.encoding  #+ self.authors
 
 	def match(self, opening):
-		'''
-		Determines if an opening matches this listing.
+		""" Determines if an opening matches this listing.
 		Returns 2 if perfect match, 1 if poor match, 0 if no match.
-		'''
+		"""
 		f_match = opening.formats.get(self.format, 0)
 		b_match = opening.encodings.get(self.encoding, 0)
 		m_match = opening.media.get(self.medium, 0)
@@ -200,7 +231,7 @@ class ListingGroup():
 		return s
 
 	def find_openings(self, user):
-		# Finds openings that can be filled by any listings in this group.
+		""" Finds openings that can be filled by any listings in this group. """
 		r = OpeningSearch(user)
 		pluses = self.title.replace(' ', '+')
 		done, times = False, 2
@@ -210,6 +241,7 @@ class ListingGroup():
 				r.search(pluses)
 				done = True
 			except KeyError:
+				print(r)
 				log_print('Rate limit exceeded. Pausing ' + str(times*2) + ' seconds.')
 				repeat(pause, times)
 				times *= 2
@@ -276,7 +308,7 @@ class ListingSearch(Search):
 
 
 class Groups():
-	# A container that holds multiple ListingGroup()s
+	""" A container that holds multiple ListingGroup()s """
 	def __init__(self, user):
 		self.user = user
 		self.groups = {}
@@ -313,7 +345,7 @@ class Groups():
 
 
 class Match(Groups):
-	# A Groups() specialized towards finding matching openings.
+	""" A Groups() specialized towards finding matching openings. """
 	good_header = c.g + c.bold + center('', '=') + center('==== GOOD MATCHES ====', ' ') + center('-'*22, ' ') + '\n' + c.end
 	poor_header = c.r + c.bold + center('', '=') + center('==== POOR MATCHES ====', ' ') + center('-'*22, ' ') + '\n' + c.end
 
@@ -323,6 +355,9 @@ class Match(Groups):
 		self.groups = {}
 
 	def time_to_match(self, listing_search):
+		""" Look at last search and compare results. If less than 10 in common,
+		return True so we know to run the next search.
+		"""
 		overlap = 0
 		for new_group in listing_search.results:
 			for old_group in self.recently_checked.results:
@@ -353,7 +388,7 @@ class Match(Groups):
 			self.match(t, session)
 			return
 		elif 22 < overlap < 28:
-			self.fill_check()
+			self.fill_check(session)
 		print('Not yet time to search.')
 
 	def explicit_match(self, session, term='', page=1):
@@ -373,12 +408,17 @@ class Match(Groups):
 			print('page', random_page)
 			self.explicit_match(session=session, page = random_page)
 
-	def fill_check(self):
+	def fill_check(self, session):
+		""" Go through every opening for every listing group, and use
+		Opening().is_filled() to check fill state for each.
+		"""
 		for group in self.get_all():
 			for opening in group.get_all():
 				pause()
 				if opening.is_filled(self.user):
 					log_print('Opening #' + str(opening.id) + ' filled.')
 					group.remove(opening)
+					session.save_session()
 			if len(group.get_all()) == 0:
 				self.remove(group)
+				session.save_session()
