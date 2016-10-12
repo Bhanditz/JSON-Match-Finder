@@ -33,7 +33,7 @@ Each command is documented within the user interface, simply use the help comman
 ```
 > help login
 ```
-For more information on the available commands, please see the [Wiki](https://github.com/dnut/jmf/wiki).
+For more information on the available commands, please see the [Wiki](https://github.com/dnut/JSON-Match-Finder/wiki).
 ## File Outline
 #### Package Files
 
