@@ -2,7 +2,6 @@ import html.parser
 import shutil
 import math
 import datetime
-from decimal import Decimal
 from .config import *
 
 
