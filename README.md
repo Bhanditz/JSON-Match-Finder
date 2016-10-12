@@ -38,15 +38,15 @@ For more information on the available commands, please see the [Wiki](https://gi
 #### Package Files
 
 <big><pre>
-[PKGBUILD](PKGBUILD)              Installs package in Arch Linux.
-src/[setup.py](src/setup.py)          Installs Python module.
+[PKGBUILD](PKGBUILD)             Installs package in Arch Linux.
+src/[setup.py](src/setup.py)         Installs Python module.
 src/[jmf.py](src/jmf.py)           Executable for interactive session.
 src/[jmf-service.py](src/jmf-service.py)   Executable used by service.
 src/[jmf.timer](src/jmf.timer)        Systemd timer that runs service periodically.
 src/[jmf.service](src/jmf.service)      Systemd service that runs jmf-service.py.
 src/jmf/[\__init__.py](src/jmf/__init__.py)  Python module information.
 src/jmf/[api.py](src/jmf/api.py)       Accesses JSON API.
-src/jmf/[libjmf.py](src/jmf/libjmf.py)   Provides general functions used in jmf.
+src/jmf/[libjmf.py](src/jmf/libjmf.py)    Provides general functions used in jmf.
 src/jmf/[service.py](src/jmf/service.py)   Operates continuous automated service.
 src/jmf/[ui.py](src/jmf/ui.py)        Fully interactive command-line shell.
 src/jmf/[config.py](src/jmf/config.py)    Build time configuration.
