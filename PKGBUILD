@@ -6,7 +6,7 @@ arch=('any')
 url=""
 license=('GPLv3')
 groups=()
-depends=('python>=3', 'python-openings')
+depends=('python>=3', 'python-requests')
 makedepends=()
 provides=()
 conflicts=()
