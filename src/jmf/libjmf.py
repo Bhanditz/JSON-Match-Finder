@@ -2,6 +2,7 @@ import html.parser
 import shutil
 import math
 import datetime
+from decimal import Decimal
 from .config import *
 
 
@@ -38,10 +39,10 @@ def repeat(function, times):
 		function()
 
 def legible(size):
-	for unit in ['B','KB','MB','GB','TB','PB']:
-		if abs(size) < 1000:
-			return str(size) + ' ' + unit
-		num /= 1000.0
+	for unit in ['B','KiB','MiB','GiB','TiB','PiB']:
+		if abs(size) < 1024:
+			return '{0:.1f}'.format(size).rstrip('0').rstrip('.') + ' ' + unit
+		size /= 1024.0
 
 def yn(prompt, preferred='neither'):
 	force = preferred.lower() == 'y' or preferred.lower() == 'n'
