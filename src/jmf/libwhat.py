@@ -96,7 +96,7 @@ def now():
 	return datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 def log_print(s, quiet=False):
-	log_file = open(config+'what.log', 'a')
+	log_file = open(config+'jmf.log', 'a')
 	time = str(now())
 	if interactive:
 		prefix = time + ' - Interactive - '

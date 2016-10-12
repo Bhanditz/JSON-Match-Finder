@@ -4,7 +4,7 @@ import pickle
 import copy
 from random import randint
 from .config import *
-from .libwhat import *
+from .libjmf import *
 
 
 class User():

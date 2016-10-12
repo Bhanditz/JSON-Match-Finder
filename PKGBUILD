@@ -1,4 +1,4 @@
-pkgname=what
+pkgname=jmf
 pkgver=0.1.1
 pkgrel=1
 pkgdesc="Match listings to unfilled openings."
@@ -25,12 +25,12 @@ build() {
 }
 
 package() {
-  # cd "$srcdir/what" # cd "$srcdir/what-$pkgver"
+  # cd "$srcdir/jmf" # cd "$srcdir/jmf-$pkgver"
   python setup.py install --root="$pkgdir/" --optimize=1
-  install -Dm 644 $srcdir/what.service $pkgdir/usr/lib/systemd/user/what.service
-  install -Dm 644 $srcdir/what.timer $pkgdir/usr/lib/systemd/user/what.timer
-  install -Dm 755 $srcdir/what.py $pkgdir/usr/bin/what
-  install -Dm 755 $srcdir/what-service.py $pkgdir/usr/bin/what-service
+  install -Dm 644 $srcdir/jmf.service $pkgdir/usr/lib/systemd/user/jmf.service
+  install -Dm 644 $srcdir/jmf.timer $pkgdir/usr/lib/systemd/user/jmf.timer
+  install -Dm 755 $srcdir/jmf.py $pkgdir/usr/bin/jmf
+  install -Dm 755 $srcdir/jmf-service.py $pkgdir/usr/bin/jmf-service
 }
 
 # vim:set ts=2 sw=2 et:

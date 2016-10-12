@@ -4,7 +4,7 @@ import time
 import os
 import argparse
 from .config import *
-from .libwhat import *
+from .libjmf import *
 from .api import *
 from .session import *
 
@@ -265,7 +265,7 @@ class UI(cmd.Cmd, Help, Session, Args):
 	def do_log(self, line):
 		args = self.log_args(line)
 		try:
-			log_file = open(config+'what.log', 'r')
+			log_file = open(config+'jmf.log', 'r')
 			raw_log = log_file.read()
 			log_file.close()
 			log = self.log_parse(raw_log, args)

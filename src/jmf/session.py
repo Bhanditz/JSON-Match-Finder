@@ -2,13 +2,13 @@ import pickle
 import time
 import os
 from .config import *
-from .libwhat import *
+from .libjmf import *
 from .api import *
 
 
 class Session():
 	busy = False
-	config = os.environ['HOME'] + '/.config/what/'
+	config = os.environ['HOME'] + '/.config/jmf/'
 	def __init__(self):
 		self.last_change = self.get_last_change()
 

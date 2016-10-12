@@ -1,7 +1,7 @@
 import time
 import os
 from .config import *
-from .libwhat import *
+from .libjmf import *
 from .api import *
 from .session import *
 

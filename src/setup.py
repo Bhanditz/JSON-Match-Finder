@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-setup(name='what',
+setup(name='jmf',
 	version='0.1.1',
 	description='Match listings to unfilled openings.',
 	url='',

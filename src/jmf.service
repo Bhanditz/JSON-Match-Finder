@@ -1,7 +1,7 @@
 [Unit]
-Description=Run what-service
+Description=Run jmf-service
 RefuseManualStart=no
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/what-service
+ExecStart=/usr/bin/jmf-service
