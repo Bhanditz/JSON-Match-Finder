@@ -115,19 +115,10 @@ class Opening():
 		l = c.bold+'VM Requirements: '+c.end + log_cert
 		return '\n'.join([t, u, v, a, f, b, m, l, d])
 
-	def url_set(self):
-		""" Not sure why I ever had this outside of __init__. Keeping for now in
-		case I realize why I had it in the first place.
-		"""
-		self.api_url = 'https://website.com/api.php?action=opening&id=' + str(self.id)
-		self.url = 'https://website.com/openings.php?action=view&id=' + str(self.id)
-		return self.url
-
 	def is_filled(self, user):
 		""" Check fill status of the opening. Account for possibly deleted
 		openings as well as possible errors in fetching the opening.
 		"""
-		#self.url_set()
 		opening_page = user.session.get(self.api_url).text
 		json_data = json.loads(opening_page)
 		try:
