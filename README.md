@@ -1,5 +1,7 @@
 # What
-What is a generalized Python 3 application used to match listings against openings via authenticated JSON API access. Included is a service that continuously monitors the API and an interactive shell with ten commands. It must be modified in order to be used depending on your specific JSON API implementation. What is what you make it.
+What is a generalized Python 3 application used to match listings against openings via authenticated JSON API access. You can run searches for listings and searches for openings, but the ultimate goal is to find listings that match openings. The idea is that there are two databases, one we are calling "listings" and one we are calling "openings." We do not have access to the entire databases, so we cannot combine them locally and run nice SQL queries over them both. Furthermore, either they are split across entirely separate JSON APIs, or they coexist within one API that does not provide any way to find matches between the two databases. This makes it difficult to find common data between each database without software like What. What must be modified in order to be used depending on your specific JSON API implementation. What is what you make it.
+
+Included is a service that regularly queries the listings API to monitor for all new listings to find every listing that fills any opening. Also included is an interactive shell with ten commands. These commands allow you to login, logout, run all kinds of searches, review your matches, examine logs, run any arbitrary python code with custom utilization of the What library, run shell commands, and more.
 
 What as a package is made for Linux systems using systemd, but as a Python module it can be used in any system that has Python 3. It is possible without much difficulty to port the entire application with all of its functionality to any system, including Windows and OS X.
 
@@ -31,6 +33,7 @@ Each command is documented within the user interface, simply use the help comman
 ```
 > help login
 ```
+For more information on the available commands, please see the [Wiki](https://github.com/dnut/what/wiki).
 ## File Outline
 #### Package Files
 
